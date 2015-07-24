@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Passion Soccer</title>
+		<!--Botones de redes sociales CSS -->
+		<link rel="stylesheet" href="./css/bootstrap-social.css">
+		<link rel="stylesheet" href="./css/font-awesome.css">
+		<!--SweetAlert Mensajes de alerta CSS -->
+		<link rel="stylesheet" href="./css/sweet-alert.css">
+		<!-- Mi estilo CSS -->
+		<link rel="stylesheet" href="./css/mypassion.css">
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="./css/bootstrap.min.css">
+
+		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+		<!--[if lt IE 9]>
+			<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+			<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div id="espere" class="hidden"></div>
+		<!-- Div nombre de equipos -->
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<!-- Div faltas, nombre de equipo local y goles -->
+			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center juez">
+				<div class="clearfix">&nbsp;</div>
+				<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-center">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">Faltas</div>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 faltas btn-pinterest">
+						<div class="clearfix">&nbsp;</div>
+						<div class="clearfix" id="nfaltas-local">0</div>
+						<div class="clearfix">&nbsp;</div>
+					</div>
+				</div>
+				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+					<div class="clearfix">&nbsp;</div>
+					<div class="clearfix" id="equipo-local">Equipo Local</div>
+					<div class="clearfix">&nbsp;</div>
+				</div>
+				<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">Goles</div>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 goles btn-yahoo">
+						<div class="clearfix">&nbsp;</div>
+						<div class="clearfix" id="ngoles-local">0</div>
+						<div class="clearfix">&nbsp;</div>
+					</div>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+			</div>
+			<!-- Div faltas, nombre de equipo visita y goles -->
+			<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 text-center juez">
+				<div class="clearfix">&nbsp;</div>
+				<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 text-center">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">Goles</div>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 goles btn-yahoo">
+						<div class="clearfix">&nbsp;</div>
+						<div class="clearfix" id="ngoles-visita">0</div>
+						<div class="clearfix">&nbsp;</div>
+					</div>
+				</div>
+				<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+					<div class="clearfix">&nbsp;</div>
+					<div class="clearfix" id="equipo-visita">Equipo Visita</div>
+					<div class="clearfix">&nbsp;</div>
+				</div>
+				<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 text-center">Faltas</div>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12r faltas btn-pinterest">
+						<div class="clearfix">&nbsp;</div>
+						<div class="clearfix" id="nfaltas-visita">0</div>
+						<div class="clearfix">&nbsp;</div>
+					</div>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+			</div>
+		</div>
+		<!-- Div Tiempo y opciones por equipo -->
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<!-- Div opciones local -->
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 juez">
+				<div class="clearfix">&nbsp;</div>
+				<!-- Boton tiempo local -->
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 btn btn-github disabled" id="tiempo-local">
+					<div class="clearfix nom-boton">
+						<i class="fa fa-clock-o"></i> Tiempo</div>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+				<!-- Boton tarjeta local -->
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 btn btn-openid disabled" id="tarjeta-local">
+					<div class="clearfix nom-boton"><i class="fa fa-tablet"></i> Tarjetas</div>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+				<!-- Boton faltas local -->
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 btn btn-pinterest disabled" id="falta-local">
+					<div class="clearfix nom-boton"><i class="fa fa-ambulance"></i> Faltas</div>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+				<!-- Boton goles local -->
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 btn btn-yahoo disabled" id="gol-local">
+					<div class="clearfix nom-boton"><i class="fa fa-futbol-o"></i> Goles</div>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+			</div>
+			<!-- Div Tiempo -->
+			<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 text-center juez">
+				<div class="clearfix">&nbsp;</div>
+				<div class="clearfix">&nbsp;</div>
+				<div class="clearfix">&nbsp;</div>
+				<div class="clearfix">&nbsp;</div>
+				<div class="clearfix">&nbsp;</div>
+				<div class="clearfix">&nbsp;</div>
+				<div class="clearfix">&nbsp;</div>
+				<div class="clearfix" id="reloj">00:00:00</div>
+				<div class="clearfix">&nbsp;</div>
+				<div class="clearfix">&nbsp;</div>
+				<div class="clearfix">&nbsp;</div>
+				<div class="clearfix">
+					<a class="btn btn-social-icon btn-flickr">
+						<i class="fa fa-tablet"></i>
+					</a>&nbsp;
+				</div>
+				<div class="clearfix">&nbsp;</div>
+				<div class="clearfix">&nbsp;</div>
+				<div class="clearfix">&nbsp;</div>
+			</div>
+			<!-- Div opciones visita -->
+			<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 juez">
+				<div class="clearfix">&nbsp;</div>
+				<!-- Boton tiempo visita -->
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 btn btn-github disabled" id="tiempo-visita">
+					<div class="clearfix nom-boton"><i class="fa fa-clock-o"></i> Tiempo</div>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+				<!-- Boton tarjetas visita -->
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 btn btn-openid disabled" id="tarjeta-visita">
+					<div class="clearfix nom-boton"><i class="fa fa-tablet"></i> Tarjetas</div>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+				<!-- Boton faltas visita -->
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 btn btn-pinterest disabled" id="falta-visita">
+					<div class="clearfix nom-boton"><i class="fa fa-ambulance"></i> Faltas</div>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+				<!-- Boton goles visita -->
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 btn btn-yahoo disabled" id="gol-visita">
+					<div class="clearfix nom-boton"><i class="fa fa-futbol-o"></i> Goles</div>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+			</div>	
+		</div>
+		<!-- Div opciones genrales terminar, suspender y detener tiempo -->
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+			<!-- Boton Iniciar/Terminar partido -->
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center juez">
+				<div class="clearfix">&nbsp;</div>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="hidden-xs hidden-sm col-md-3 col-lg-3">&nbsp;</div>
+					<div class="col-xs-12 col-sm-10 col-md-6 col-lg-6 btn btn-success" id="terminar-partido">
+						<div class="clearfix nom-boton"><i class="fa fa-clock-o"></i> Iniciar</div>
+					</div>
+					<div class="hidden-xs hidden-sm col-md-3 col-lg-3">&nbsp;</div>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+			</div>
+			<!-- Boton Suspender partido -->
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center juez">
+				<div class="clearfix">&nbsp;</div>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="hidden-xs hidden-sm col-md-3 col-lg-3">&nbsp;</div>
+					<div class="col-xs-12 col-sm-10 col-md-6 col-lg-6 btn btn-info disabled" id="suspender-partido">
+						<div class="clearfix nom-boton"><i class="fa fa-clock-o"></i> Suspender</div>
+					</div>
+					<div class="hidden-xs hidden-sm col-md-3 col-lg-3">&nbsp;</div>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+			</div>
+			<!-- Boton detener partido -->
+			<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 text-center juez">
+				<div class="clearfix">&nbsp;</div>
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+					<div class="hidden-xs hidden-sm col-md-3 col-lg-3">&nbsp;</div>
+					<div class="col-xs-12 col-sm-10 col-md-6 col-lg-6 btn btn-default disabled" id="detener-tiempo">
+						<div class="clearfix nom-boton"><i class="fa fa-clock-o"></i> Detener</div>
+					</div>
+					<div class="hidden-xs hidden-sm col-md-3 col-lg-3">&nbsp;</div>
+				</div>
+				<div class="clearfix">&nbsp;</div>
+			</div>
+		</div>
+		<!-- jQuery -->
+		<script src="./js/jquery.js"></script>
+		<!-- SweetAlert alertas tipo modal -->
+		<script src="./js/sweet-alert.min.js"></script>
+		<!-- Bootstrap JavaScript -->
+		<script src="./js/bootstrap.min.js"></script>
+		<!-- Javascript local -->
+		<script src="./js/mypassion.js"></script>
+	</body>
+</html>
