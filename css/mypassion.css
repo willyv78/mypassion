@@ -58,6 +58,13 @@
 	font-weight: 700;
 	font-stretch: ultra-expanded;
 }
+.det-boton{
+    font-size: 1.6em;
+    padding: 10px;
+    font-weight: 700;
+    font-stretch: ultra-expanded;
+    white-space: normal;
+}
 /* clase del div que muestra el gif y el mensaje de cargando */
 #espere {
     background-color: rgba(51, 51, 51, 0.8);

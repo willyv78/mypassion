@@ -152,13 +152,19 @@ function iniciar () {
     //$(".btn").on("click", pausa);
     //empezar();
 }
-// Funcion que se ejecuta al cargar el detalle del partido Tarjetas, Faltas y Goles
-function cargaDetalle () {
-    $(".tipo_tarjeta").on("click", cargaTarjeta);
-    $(".btn-jugador").on("click", agregarDetalle);
+// funcion que cierra el div oscuro de espere para seguir navegando en la aplicacion
+function cerrarEspere () {
+    $("#espere").addClass("hidden");
+    $("#espere").html("");
 }
-// Funcion que se ejecuta al hacer click en los botones del detalle del partido en los numeros de los jugadores registrados
-function agregarDetalle (datos) {
+// Funcion que se ejecuta al seleccionar el tipo de tarjeta que se va a imponer
+function cargaTarjeta (datos) {
+    var tipo = $(this).attr("name");
+    $("#tipo-tarj").val(tipo);
+    $(".btn-jugador").removeClass("disabled");
+}
+// Funcion que se ejecuta al hacer click en los botones del detalle del partido en los numeros de los jugadores registrados tarjetas
+function agregarDetalleTarjetas (datos) {
     var tipo = $("#tipo-tarj").val();
     // si el boton del jugador no tiene ninguba tarjeta hace esto
     if($(this).hasClass('btn-default')){
@@ -328,11 +334,134 @@ function agregarDetalle (datos) {
         }
     }
 }
-// Funcion que se ejecuta al seleccionar el tipo de tarjeta que se va a imponer
-function cargaTarjeta (datos) {
-    var tipo = $(this).attr("name");
-    $("#tipo-tarj").val(tipo);
-    $(".btn-jugador").removeClass("disabled");
+// Funcion que se ejecuta al cargar el detalle del partido Tarjetas
+function cargaDetalleTarjetas () {
+    $(".tipo_tarjeta").on("click", cargaTarjeta);
+    $(".btn-jugador").on("click", agregarDetalleTarjetas);
+    $(".fa-times").parent("div").on("click", cerrarEspere);
+    $(".fa-times").on("click", cerrarEspere);
+}
+// Funcion que se ejecuta al hacer click en los botones del detalle del partido en los numeros de los jugadores registrados faltas
+function agregarDetalleFaltas (datos) {
+    // si el boton del jugador no tiene ninguba tarjeta hace esto
+    if($(this).hasClass('btn-default')){
+        var esto = $(this);
+        // mostramos mensaje para ingresar observacion del por que la tarjeta para luego mostrar en el informe
+        swal({
+            title: "Observación!",
+            text: "Digite el motivo de la sanción:",
+            type: "input",
+            showCancelButton: true,
+            cancelButtonText: "Cancelar",
+            closeOnConfirm: false,
+            confirmButtonText: "Continuar",
+            confirmButtonColor: "#51A351",
+            animation: "slide-from-top",
+            inputPlaceholder: "Motivo de la sanción"
+        },
+        function(inputValue){
+            if (inputValue === false)
+                return false;
+            if (inputValue === "") {
+                swal.showInputError("Debe escribir algo!");
+                return false;
+            }
+            swal({
+                title: "Correcto!",
+                text: "Usted Escribio: " + inputValue,
+                type: "success",
+                confirmButtonText: "Continuar",
+                confirmButtonColor: "#51A351",
+                animation: "slide-from-top"
+            });
+            // quitamos la clase default
+            $(esto).removeClass('btn-default');
+            // agregamos el icono que simboliza una tarjeta con el color defondo del tipo de tarjeta impuesta
+            $(esto).children('.det-boton').html(' <i class="fa fa-ambulance"></i>');
+            // colocamos color de fondo de la tarjeta impuesta actualmente para siempre mantener actualizado el boton
+            $(esto).addClass('btn-pinterest');
+        });
+    }
+    else{
+        var esto = $(this);
+        if($(esto).children('.det-boton').children('i').size() >= 5){
+            swal({
+                title: "Atención!",
+                text: "El jugador ya tiene 5 Faltas.",
+                type: "error",
+                confirmButtonText: "Volver",
+                confirmButtonColor: "#BD362F",
+                animation: "slide-from-top"
+            });
+        }
+        else{
+            // mostramos mensaje para ingresar observacion del por que la tarjeta para luego mostrar en el informe
+            swal({
+                title: "Observación!",
+                text: "Digite el motivo de la sanción:",
+                type: "input",
+                showCancelButton: true,
+                cancelButtonText: "Cancelar",
+                closeOnConfirm: false,
+                confirmButtonText: "Continuar",
+                confirmButtonColor: "#51A351",
+                animation: "slide-from-top",
+                inputPlaceholder: "Motivo de la sanción"
+            },
+            function(inputValue){
+                if (inputValue === false)
+                    return false;
+                if (inputValue === "") {
+                    swal.showInputError("Debe escribir algo!");
+                    return false;
+                }
+                swal({
+                    title: "Correcto!",
+                    text: "Usted Escribio: " + inputValue,
+                    type: "success",
+                    confirmButtonText: "Continuar",
+                    confirmButtonColor: "#51A351",
+                    animation: "slide-from-top"
+                });
+                $(esto).removeClass('btn-openid');
+                $(esto).children('.det-boton').append(' <i class="fa fa-ambulance"></i>');
+                $(esto).addClass('btn-pinterest');
+            });
+        }
+    }
+}
+// Funcion que se ejecuta al cargar el detalle del partido Faltas
+function cargaDetalleFaltas () {
+    $(".btn").on("click", agregarDetalleFaltas);
+    $(".fa-times").parent("div").on("click", cerrarEspere);
+    $(".fa-times").on("click", cerrarEspere);
+}
+// Funcion que se ejecuta al cargar el detalle del partido Goles
+function cargaDetalleGoles () {
+    $(".btn").on("click", agregarDetalleGoles);
+    $(".fa-times").parent("div").on("click", cerrarEspere);
+    $(".fa-times").on("click", cerrarEspere);
+}
+// Funcion que se ejecuta al hacer click en los botones del detalle del partido en los numeros de los jugadores registrados
+function agregarDetalleGoles (datos) {
+    // si el boton del jugador no tiene ninguba tarjeta hace esto
+    if($(this).hasClass('btn-default')){
+        var esto = $(this);
+        // quitamos la clase default
+        $(esto).removeClass('btn-default');
+        // agregamos el icono que simboliza una tarjeta con el color defondo del tipo de tarjeta impuesta
+        $(esto).children('.det-boton').html('<i class="fa fa-futbol-o"></i> X 1');
+        $(esto).children('.nom-boton').children('input').val(1);
+        // colocamos color de fondo de la tarjeta impuesta actualmente para siempre mantener actualizado el boton
+        $(esto).addClass('btn-yahoo');
+    }
+    else{
+        var esto = $(this);
+        var goles = $(esto).children('.nom-boton').children('input').val();
+        var total = parseInt(goles) + 1;
+        $(esto).children('.det-boton').html('<i class="fa fa-futbol-o"></i> X ' + total);
+        $(esto).children('.nom-boton').children('input').val(total);
+    }
 }
 
 
