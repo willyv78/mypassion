@@ -200,7 +200,7 @@ function agregarDetalleTarjetas (datos) {
             // quitamos la clase default
             $(esto).removeClass('btn-default');
             // agregamos el icono que simboliza una tarjeta con el color defondo del tipo de tarjeta impuesta
-            $(esto).children('.nom-boton').append(' <i class="fa fa-tablet btn-'+tipo+'"></i>');
+            $(esto).children('.det-boton').html(' <i class="fa fa-square-o btn-'+tipo+'">span</i>');
             // colocamos color de fondo de la tarjeta impuesta actualmente para siempre mantener actualizado el boton
             $(esto).addClass('btn-'+tipo);
         });
@@ -247,7 +247,7 @@ function agregarDetalleTarjetas (datos) {
                     animation: "slide-from-top"
                 });
                 $(esto).removeClass('btn-openid');
-                $(esto).children('.nom-boton').append(' <i class="fa fa-tablet btn-'+tipo+'"></i>');
+                $(esto).children('.det-boton').append(' <i class="fa fa-square-o btn-'+tipo+'"></i>');
                 $(esto).addClass('btn-'+tipo);
             });
         }
@@ -295,7 +295,7 @@ function agregarDetalleTarjetas (datos) {
                         animation: "slide-from-top"
                     });
                     $(esto).removeClass('btn-dropbox');
-                    $(esto).children('.nom-boton').append(' <i class="fa fa-tablet btn-'+tipo+'"></i>');
+                    $(esto).children('.det-boton').append(' <i class="fa fa-square-o btn-'+tipo+'"></i>');
                     $(esto).addClass('btn-'+tipo);
                 });
             }
