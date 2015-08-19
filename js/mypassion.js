@@ -161,7 +161,81 @@ function cerrarEspere () {
 function cargaTarjeta (datos) {
     var tipo = $(this).attr("name");
     $("#tipo-tarj").val(tipo);
+    if(tipo === 'openid'){
+        $('#espere').css({cursor: "url(img/icons/resaltamarillo.cur), none"});
+        $('.btn-jugador').css({cursor: "url(img/icons/resaltamarillo.cur), none"});
+    }
+    else if(tipo === 'dropbox'){
+        $('#espere').css({cursor: "url(img/icons/resaltazul.cur), none"});
+        $('.btn-jugador').css({cursor: "url(img/icons/resaltazul.cur), none"});
+    }
+    else{
+        $('#espere').css({cursor: "url(img/icons/resaltnaranja.cur), none"});
+        $('.btn-jugador').css({cursor: "url(img/icons/resaltnaranja.cur), none"});
+    }
+    
     $(".btn-jugador").removeClass("disabled");
+}
+// funcion que coloca nueva clase al elemento luego de eliminar una tarjeta
+function colocarNuevaClase (esto) {
+    // obtenemos la cantidad de elementos i que existen dentro del elemento
+    var cant_i = $(esto).children(".det-boton").children("i").size();
+    // si la cantidad de elemtos i es mayor a 0 hace esto
+    if(cant_i > 0){
+        // obtenemos las clases que tiene el ultimo elemento i
+        var class_i = $(esto).children(".det-boton").children("i:last").attr('class');
+        // descomponemos las clases por espacio
+        class_i = class_i.split(" ");
+        // asignamos la ultima clase a nuestra nueva clase
+        class_i = class_i[2];
+
+    }
+    // si no hay elemntos i dentro de nuestro elemnto jugador hace esto
+    else{
+        // asignamos como nueva clase la clase por default
+        var class_i = 'btn-default';
+        // agregamos un espacio al elemnto para que conserve el alto
+        $(esto).children(".det-boton").html("&nbsp;");
+    }
+    // agregamos la nueva clase al elemnto
+    $(esto).addClass(class_i);
+}
+// funcion que validara si ya existe una tarjeta para el jugador indicado
+function comprobarTarjeta (esto, clase) {
+    $(esto).children(".det-boton").children("i").each(function() {
+        if(clase === 'openid'){
+            tarjeta = "Amarilla";
+        }
+        else if(clase === 'dropbox'){
+            tarjeta = "Azul";
+        }
+        else{
+            tarjeta = "Roja";
+        }
+        var elemt_i = $(this);
+        var class_i = $(this).attr('class');
+        class_i = class_i.split(" ");
+        class_i = class_i[2];
+        class_i = class_i.split("-");
+        class_i = class_i[1];
+        if(class_i === clase){
+            swal({
+                title: "Atención!",
+                text: "El jugador ya tiene tarjeta " + tarjeta + ".",
+                type: "error",
+                showCancelButton: true,
+                cancelButtonText: "Cancelar",
+                confirmButtonText: "Quitar",
+                confirmButtonColor: "#BD362F",
+                animation: "slide-from-top"
+            },
+            function(){
+                $(esto).removeClass('btn-' + clase);
+                $(elemt_i).remove();
+                colocarNuevaClase(esto);
+            });
+        }
+    });
 }
 // Funcion que se ejecuta al hacer click en los botones del detalle del partido en los numeros de los jugadores registrados tarjetas
 function agregarDetalleTarjetas (datos) {
@@ -200,22 +274,15 @@ function agregarDetalleTarjetas (datos) {
             // quitamos la clase default
             $(esto).removeClass('btn-default');
             // agregamos el icono que simboliza una tarjeta con el color defondo del tipo de tarjeta impuesta
-            $(esto).children('.det-boton').html(' <i class="fa fa-square-o btn-'+tipo+'">span</i>');
+            $(esto).children('.det-boton').html(' <i class="fa fa-square-o btn-'+tipo+'"></i>');
             // colocamos color de fondo de la tarjeta impuesta actualmente para siempre mantener actualizado el boton
             $(esto).addClass('btn-'+tipo);
         });
     }
     else if($(this).hasClass('btn-openid')){
         var esto = $(this);
-        if(tipo === 'openid'){
-            swal({
-                title: "Atención!",
-                text: "El jugador ya tiene tarjeta amarilla.",
-                type: "error",
-                confirmButtonText: "Volver",
-                confirmButtonColor: "#BD362F",
-                animation: "slide-from-top"
-            });
+        if(tipo === 'openid'){           
+            comprobarTarjeta (esto, 'openid');
         }
         else{
             // mostramos mensaje para ingresar observacion del por que la tarjeta para luego mostrar en el informe
@@ -255,14 +322,7 @@ function agregarDetalleTarjetas (datos) {
     else if($(this).hasClass('btn-dropbox')){
         var esto = $(this);
         if(tipo === 'dropbox'){
-            swal({
-                title: "Atención!",
-                text: "El jugador ya tiene tarjeta azul.",
-                type: "error",
-                confirmButtonText: "Volver",
-                confirmButtonColor: "#BD362F",
-                animation: "slide-from-top"
-            });
+            comprobarTarjeta (esto, 'dropbox');
         }
         else{
             if(tipo !== 'openid'){
@@ -312,15 +372,9 @@ function agregarDetalleTarjetas (datos) {
         }
     }
     else if($(this).hasClass('btn-pinterest')){
+        var esto = $(this);
         if(tipo === 'pinterest'){
-            swal({
-                title: "Atención!",
-                text: "El jugador ya tiene tarjeta roja.",
-                type: "error",
-                confirmButtonText: "Volver",
-                confirmButtonColor: "#BD362F",
-                animation: "slide-from-top"
-            });
+            comprobarTarjeta (esto, 'pinterest');
         }
         else{
             swal({
@@ -340,6 +394,7 @@ function cargaDetalleTarjetas () {
     $(".btn-jugador").on("click", agregarDetalleTarjetas);
     $(".fa-times").parent("div").on("click", cerrarEspere);
     $(".fa-times").on("click", cerrarEspere);
+    $('.fa-times').parent("div").css("cursor", "pointer");
 }
 // Funcion que se ejecuta al hacer click en los botones del detalle del partido en los numeros de los jugadores registrados faltas
 function agregarDetalleFaltas (datos) {
