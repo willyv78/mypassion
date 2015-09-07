@@ -68,6 +68,7 @@ function continuar() {
 function pausa (datos){
     var boton = $(this).attr('id');
     var tiempo_partido = $("#reloj").html();
+    $("#espere").html("");
     if((boton === 'tiempo-local') || (boton === 'tiempo-visita')){
         $(this).children(".hidden").append(tiempo_partido);
         $(this).addClass('disabled');
@@ -395,6 +396,25 @@ function cargaDetalleTarjetas () {
     $(".fa-times").parent("div").on("click", cerrarEspere);
     $(".fa-times").on("click", cerrarEspere);
     $('.fa-times').parent("div").css("cursor", "pointer");
+    $('#espere').css({cursor: "default"});
+    $('.btn-jugador').css({cursor: "default"});
+}
+// funcion que se ejecuta cuando se hace click en el boton de corregir en faltas para borrar una falta
+function cargaFalta (datos) {
+    var corregir = $("#tipo-tarj").val();
+    if(corregir === "agregar"){
+        $("#tipo-tarj").val("corregir");
+        $(this).children('div').html("Agregar");
+        $(this).removeClass('btn-warning');
+        $(this).addClass('btn-success');
+    }
+    else{
+        $("#tipo-tarj").val("agregar");
+        $(this).children('div').html("Corregir");
+        $(this).removeClass('btn-success');
+        $(this).addClass('btn-warning');
+    }
+    
 }
 // Funcion que se ejecuta al hacer click en los botones del detalle del partido en los numeros de los jugadores registrados faltas
 function agregarDetalleFaltas (datos) {
@@ -437,65 +457,96 @@ function agregarDetalleFaltas (datos) {
             $(esto).addClass('btn-pinterest');
         });
     }
-    else{
+    else if($(this).hasClass('btn-pinterest')){
         var esto = $(this);
-        if($(esto).children('.det-boton').children('i').size() >= 5){
-            swal({
-                title: "Atención!",
-                text: "El jugador ya tiene 5 Faltas.",
-                type: "error",
-                confirmButtonText: "Volver",
-                confirmButtonColor: "#BD362F",
-                animation: "slide-from-top"
-            });
+        var corregir = $("#tipo-tarj").val();
+        if(corregir === "agregar"){
+            if($(esto).children('.det-boton').children('i').size() >= 5){
+                swal({
+                    title: "Atención!",
+                    text: "El jugador ya tiene 5 Faltas.",
+                    type: "error",
+                    confirmButtonText: "Volver",
+                    confirmButtonColor: "#BD362F",
+                    animation: "slide-from-top"
+                });
+            }
+            else{
+                // mostramos mensaje para ingresar observacion del por que la tarjeta para luego mostrar en el informe
+                swal({
+                    title: "Observación!",
+                    text: "Digite el motivo de la sanción:",
+                    type: "input",
+                    showCancelButton: true,
+                    cancelButtonText: "Cancelar",
+                    closeOnConfirm: false,
+                    confirmButtonText: "Continuar",
+                    confirmButtonColor: "#51A351",
+                    animation: "slide-from-top",
+                    inputPlaceholder: "Motivo de la sanción"
+                },
+                function(inputValue){
+                    if (inputValue === false)
+                        return false;
+                    if (inputValue === "") {
+                        swal.showInputError("Debe escribir algo!");
+                        return false;
+                    }
+                    swal({
+                        title: "Correcto!",
+                        text: "Usted Escribio: " + inputValue,
+                        type: "success",
+                        confirmButtonText: "Continuar",
+                        confirmButtonColor: "#51A351",
+                        animation: "slide-from-top"
+                    });
+                    $(esto).removeClass('btn-openid');
+                    $(esto).children('.det-boton').append(' <i class="fa fa-ambulance"></i>');
+                    $(esto).addClass('btn-pinterest');
+                });
+            }
         }
         else{
             // mostramos mensaje para ingresar observacion del por que la tarjeta para luego mostrar en el informe
             swal({
-                title: "Observación!",
-                text: "Digite el motivo de la sanción:",
-                type: "input",
+                title: "Atención!",
+                text: "Desea quitar una falta ya agregada",
+                type: "warning",
                 showCancelButton: true,
                 cancelButtonText: "Cancelar",
                 closeOnConfirm: false,
-                confirmButtonText: "Continuar",
-                confirmButtonColor: "#51A351",
-                animation: "slide-from-top",
-                inputPlaceholder: "Motivo de la sanción"
+                confirmButtonText: "Quitar",
+                confirmButtonColor: "#BD362F",
+                animation: "slide-from-top"
             },
-            function(inputValue){
-                if (inputValue === false)
-                    return false;
-                if (inputValue === "") {
-                    swal.showInputError("Debe escribir algo!");
-                    return false;
-                }
+            function(){
+                $(esto).children('.det-boton').children("i:last-child").remove();
+                colocarNuevaClase(esto);
+                $("#tipo-tarj").val("agregar");
+                $(".tipo_accion").children('div').html("Corregir");
+                $(".tipo_accion").removeClass('btn-success');
+                $(".tipo_accion").addClass('btn-warning');
                 swal({
                     title: "Correcto!",
-                    text: "Usted Escribio: " + inputValue,
+                    text: "Se elimino la falta",
                     type: "success",
                     confirmButtonText: "Continuar",
                     confirmButtonColor: "#51A351",
                     animation: "slide-from-top"
                 });
-                $(esto).removeClass('btn-openid');
-                $(esto).children('.det-boton').append(' <i class="fa fa-ambulance"></i>');
-                $(esto).addClass('btn-pinterest');
             });
         }
+        
     }
 }
 // Funcion que se ejecuta al cargar el detalle del partido Faltas
 function cargaDetalleFaltas () {
-    $(".btn").on("click", agregarDetalleFaltas);
+    $(".tipo_accion").on("click", cargaFalta);
+    $(".col-lg-10.btn").on("click", agregarDetalleFaltas);
     $(".fa-times").parent("div").on("click", cerrarEspere);
     $(".fa-times").on("click", cerrarEspere);
-}
-// Funcion que se ejecuta al cargar el detalle del partido Goles
-function cargaDetalleGoles () {
-    $(".btn").on("click", agregarDetalleGoles);
-    $(".fa-times").parent("div").on("click", cerrarEspere);
-    $(".fa-times").on("click", cerrarEspere);
+    $('#espere').css({cursor: "default"});
+    $('.btn-jugador').css({cursor: "default"});
 }
 // Funcion que se ejecuta al hacer click en los botones del detalle del partido en los numeros de los jugadores registrados
 function agregarDetalleGoles (datos) {
@@ -510,13 +561,21 @@ function agregarDetalleGoles (datos) {
         // colocamos color de fondo de la tarjeta impuesta actualmente para siempre mantener actualizado el boton
         $(esto).addClass('btn-yahoo');
     }
-    else{
+    else if($(this).hasClass('btn-yahoo')){
         var esto = $(this);
         var goles = $(esto).children('.nom-boton').children('input').val();
         var total = parseInt(goles) + 1;
         $(esto).children('.det-boton').html('<i class="fa fa-futbol-o"></i> X ' + total);
         $(esto).children('.nom-boton').children('input').val(total);
     }
+}
+// Funcion que se ejecuta al cargar el detalle del partido Goles
+function cargaDetalleGoles () {
+    $(".btn").on("click", agregarDetalleGoles);
+    $(".fa-times").parent("div").on("click", cerrarEspere);
+    $(".fa-times").on("click", cerrarEspere);
+    $('#espere').css({cursor: "default"});
+    $('.btn-jugador').css({cursor: "default"});
 }
 
 
