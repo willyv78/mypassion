@@ -428,6 +428,11 @@ function agregarDetalleFaltas (datos) {
                 confirmButtonText: "Continuar",
                 confirmButtonColor: "#51A351",
                 animation: "slide-from-top"
+            },
+            function () {
+                var equipo = $("#equipo").val();
+                var num_faltas = $("#nfaltas-"+equipo).html();
+                $("#nfaltas-"+equipo).html(parseInt(num_faltas) + 1);
             });
             // quitamos la clase default
             $(esto).removeClass('btn-default');
@@ -477,6 +482,11 @@ function agregarDetalleFaltas (datos) {
                     confirmButtonText: "Continuar",
                     confirmButtonColor: "#51A351",
                     animation: "slide-from-top"
+                },
+                function () {
+                    var equipo = $("#equipo").val();
+                    var num_faltas = $("#nfaltas-"+equipo).html();
+                    $("#nfaltas-"+equipo).html(parseInt(num_faltas) + 1);
                 });
                 $(esto).removeClass('btn-openid');
                 $(esto).children('.det-boton').append(' <i class="fa fa-ambulance"></i>');

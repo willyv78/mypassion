@@ -1,12 +1,14 @@
 <?php 
 $boton = "";
 $equipo = "";
+$titulo = "";
 if(isset($_GET['boton'])){
 	$boton_temp = explode("-", $_GET['boton']);
 	$boton = $boton_temp[0];
+	$equipo = $boton_temp[1];
 }
 if(isset($_GET['equipo'])){
-	$equipo = $_GET['equipo'];
+	$titulo = $_GET['equipo'];
 }
 ?>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
