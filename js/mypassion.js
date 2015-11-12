@@ -154,6 +154,9 @@ function iniciar () {
 }
 // funcion que cierra el div oscuro de espere para seguir navegando en la aplicacion
 function cerrarEspere () {
+    // Volvemos el cursor del maouse a su estado natural
+    $('#espere').css("cursor", "default");
+    $('.btn-jugador').css("cursor", "default");
     $("#espere").addClass("hidden");
     $("#espere").html("");
 }
@@ -240,51 +243,10 @@ function comprobarTarjeta (esto, clase) {
 // Funcion que se ejecuta al hacer click en los botones del detalle del partido en los numeros de los jugadores registrados tarjetas
 function agregarDetalleTarjetas (datos) {
     var tipo = $("#tipo-tarj").val();
-    // si el boton del jugador no tiene ninguba tarjeta hace esto
-    if($(this).hasClass('btn-default')){
-        var esto = $(this);
-        // mostramos mensaje para ingresar observacion del por que la tarjeta para luego mostrar en el informe
-        swal({
-            title: "Observación!",
-            text: "Digite el motivo de la sanción:",
-            type: "input",
-            showCancelButton: true,
-            cancelButtonText: "Cancelar",
-            closeOnConfirm: false,
-            confirmButtonText: "Continuar",
-            confirmButtonColor: "#51A351",
-            animation: "slide-from-top",
-            inputPlaceholder: "Motivo de la sanción"
-        },
-        function(inputValue){
-            if (inputValue === false)
-                return false;
-            if (inputValue === "") {
-                swal.showInputError("Debe escribir algo!");
-                return false;
-            }
-            swal({
-                title: "Correcto!",
-                text: "Usted Escribio: " + inputValue,
-                type: "success",
-                confirmButtonText: "Continuar",
-                confirmButtonColor: "#51A351",
-                animation: "slide-from-top"
-            });
-            // quitamos la clase default
-            $(esto).removeClass('btn-default');
-            // agregamos el icono que simboliza una tarjeta con el color defondo del tipo de tarjeta impuesta
-            $(esto).children('.det-boton').html(' <i class="fa fa-square-o btn-'+tipo+'"></i>');
-            // colocamos color de fondo de la tarjeta impuesta actualmente para siempre mantener actualizado el boton
-            $(esto).addClass('btn-'+tipo);
-        });
-    }
-    else if($(this).hasClass('btn-openid')){
-        var esto = $(this);
-        if(tipo === 'openid'){           
-            comprobarTarjeta (esto, 'openid');
-        }
-        else{
+    if(tipo){
+        // si el boton del jugador no tiene ninguba tarjeta hace esto
+        if($(this).hasClass('btn-default')){
+            var esto = $(this);
             // mostramos mensaje para ingresar observacion del por que la tarjeta para luego mostrar en el informe
             swal({
                 title: "Observación!",
@@ -313,19 +275,20 @@ function agregarDetalleTarjetas (datos) {
                     confirmButtonColor: "#51A351",
                     animation: "slide-from-top"
                 });
-                $(esto).removeClass('btn-openid');
-                $(esto).children('.det-boton').append(' <i class="fa fa-square-o btn-'+tipo+'"></i>');
+                // quitamos la clase default
+                $(esto).removeClass('btn-default');
+                // agregamos el icono que simboliza una tarjeta con el color defondo del tipo de tarjeta impuesta
+                $(esto).children('.det-boton').html(' <i class="fa fa-square-o btn-'+tipo+'"></i>');
+                // colocamos color de fondo de la tarjeta impuesta actualmente para siempre mantener actualizado el boton
                 $(esto).addClass('btn-'+tipo);
             });
         }
-    }
-    else if($(this).hasClass('btn-dropbox')){
-        var esto = $(this);
-        if(tipo === 'dropbox'){
-            comprobarTarjeta (esto, 'dropbox');
-        }
-        else{
-            if(tipo !== 'openid'){
+        else if($(this).hasClass('btn-openid')){
+            var esto = $(this);
+            if(tipo === 'openid'){           
+                comprobarTarjeta (esto, 'openid');
+            }
+            else{
                 // mostramos mensaje para ingresar observacion del por que la tarjeta para luego mostrar en el informe
                 swal({
                     title: "Observación!",
@@ -354,10 +317,68 @@ function agregarDetalleTarjetas (datos) {
                         confirmButtonColor: "#51A351",
                         animation: "slide-from-top"
                     });
-                    $(esto).removeClass('btn-dropbox');
+                    $(esto).removeClass('btn-openid');
                     $(esto).children('.det-boton').append(' <i class="fa fa-square-o btn-'+tipo+'"></i>');
                     $(esto).addClass('btn-'+tipo);
                 });
+            }
+        }
+        else if($(this).hasClass('btn-dropbox')){
+            var esto = $(this);
+            if(tipo === 'dropbox'){
+                comprobarTarjeta (esto, 'dropbox');
+            }
+            else{
+                if(tipo !== 'openid'){
+                    // mostramos mensaje para ingresar observacion del por que la tarjeta para luego mostrar en el informe
+                    swal({
+                        title: "Observación!",
+                        text: "Digite el motivo de la sanción:",
+                        type: "input",
+                        showCancelButton: true,
+                        cancelButtonText: "Cancelar",
+                        closeOnConfirm: false,
+                        confirmButtonText: "Continuar",
+                        confirmButtonColor: "#51A351",
+                        animation: "slide-from-top",
+                        inputPlaceholder: "Motivo de la sanción"
+                    },
+                    function(inputValue){
+                        if (inputValue === false)
+                            return false;
+                        if (inputValue === "") {
+                            swal.showInputError("Debe escribir algo!");
+                            return false;
+                        }
+                        swal({
+                            title: "Correcto!",
+                            text: "Usted Escribio: " + inputValue,
+                            type: "success",
+                            confirmButtonText: "Continuar",
+                            confirmButtonColor: "#51A351",
+                            animation: "slide-from-top"
+                        });
+                        $(esto).removeClass('btn-dropbox');
+                        $(esto).children('.det-boton').append(' <i class="fa fa-square-o btn-'+tipo+'"></i>');
+                        $(esto).addClass('btn-'+tipo);
+                    });
+                }
+                else{
+                    swal({
+                        title: "Atención!",
+                        text: "Esta acción no es lógica.",
+                        type: "error",
+                        confirmButtonText: "Volver",
+                        confirmButtonColor: "#BD362F",
+                        animation: "slide-from-top"
+                    });
+                }
+            }
+        }
+        else if($(this).hasClass('btn-pinterest')){
+            var esto = $(this);
+            if(tipo === 'pinterest'){
+                comprobarTarjeta (esto, 'pinterest');
             }
             else{
                 swal({
@@ -369,22 +390,6 @@ function agregarDetalleTarjetas (datos) {
                     animation: "slide-from-top"
                 });
             }
-        }
-    }
-    else if($(this).hasClass('btn-pinterest')){
-        var esto = $(this);
-        if(tipo === 'pinterest'){
-            comprobarTarjeta (esto, 'pinterest');
-        }
-        else{
-            swal({
-                title: "Atención!",
-                text: "Esta acción no es lógica.",
-                type: "error",
-                confirmButtonText: "Volver",
-                confirmButtonColor: "#BD362F",
-                animation: "slide-from-top"
-            });
         }
     }
 }
@@ -497,18 +502,16 @@ function agregarDetalleFaltas (datos) {
 }
 // Funcion que se ejecuta al cargar el detalle del partido Faltas
 function cargaDetalleFaltas () {
-    $(".btn").on("click", agregarDetalleFaltas);
-    $(".fa-times").parent("div").on("click", cerrarEspere);
-    $(".fa-times").on("click", cerrarEspere);
-}
-// Funcion que se ejecuta al cargar el detalle del partido Goles
-function cargaDetalleGoles () {
-    $(".btn").on("click", agregarDetalleGoles);
+    $(".btn-jugador").on("click", agregarDetalleFaltas);
     $(".fa-times").parent("div").on("click", cerrarEspere);
     $(".fa-times").on("click", cerrarEspere);
 }
 // Funcion que se ejecuta al hacer click en los botones del detalle del partido en los numeros de los jugadores registrados
 function agregarDetalleGoles (datos) {
+    // Obtenemos el equipo que hace el gol
+    var equipo = $("#equipo").val();
+    // Obtenemos el numero de goles que ha marcado
+    var num_goles = $("#ngoles-"+equipo).html();
     // si el boton del jugador no tiene ninguba tarjeta hace esto
     if($(this).hasClass('btn-default')){
         var esto = $(this);
@@ -527,6 +530,14 @@ function agregarDetalleGoles (datos) {
         $(esto).children('.det-boton').html('<i class="fa fa-futbol-o"></i> X ' + total);
         $(esto).children('.nom-boton').children('input').val(total);
     }
+    //Sumamos el gol en la pantalla principal correspondiente 
+    $("#ngoles-"+equipo).html(parseInt(num_goles) + 1);
+}
+// Funcion que se ejecuta al cargar el detalle del partido Goles
+function cargaDetalleGoles () {
+    $(".btn").on("click", agregarDetalleGoles);
+    $(".fa-times").parent("div").on("click", cerrarEspere);
+    $(".fa-times").on("click", cerrarEspere);
 }
 
 

@@ -13,7 +13,10 @@ if(isset($_GET['equipo'])){
 ?>
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 	<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">&nbsp;</div>
-	<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10"><?php echo $equipo;?></div>
+	<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+		<?php echo $titulo;?>
+		<input type="hidden" name="equipo" id="equipo" class="form-control" value="<?php echo $equipo;?>">
+	</div>
 	<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
 		<i class="fa fa-times"></i>
 	</div>
